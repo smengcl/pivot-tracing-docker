@@ -7,11 +7,12 @@ dots()
   kill $! ; printf "\n"
 }
 
-printf "[INFO] Building project, it might take a while " ; dots
+printf "Building project, it might take a while " ; dots
 # run maven on main repo
-cd /home/pt && mvn clean package install -DskipTests
+ls -lah /home/pt
+cd /home/pt && mvn clean package install -DskipTests -e -Dhttps.protocols=TLSv1.2
 # run maven on hadoop dist
-cd /home/pt/hadoop && mvn clean package install -Pdist -DskipTests -Dmaven.javadoc.skip="true"
+cd /home/pt/hadoop && mvn clean package install -Pdist -DskipTests -e -Dhttps.protocols=TLSv1.2 -Dmaven.javadoc.skip="true"
 # remove if it exists -> prevents error msg on first build
 if [ -d "/home/pt/hadoop-config " ]; then
   rm -r /home/pt/hadoop-config
